@@ -1,0 +1,45 @@
+{
+  "name": "algo-expert",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tarun984012/algo-expert.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/tarun984012/algo-expert/issues"
+  },
+  "imports": {
+    "#root/*": "./*.js",
+    "#libs/*": "./src/libs/*.lib.js",
+    "#utils/*": "./src/utils/*.util.js",
+    "#routes/*": "./src/routes/*.route.js",
+    "#controllers/*": "./src/controllers/*.controller.js",
+    "#services/*": "./src/services/*.service.js",
+    "#configs/*": "./src/configs/*.config.js",
+    "#models/*": "./src/models/*.model.js",
+    "#middlewares/*": "./src/middlewares/*.middleware.js",
+    "#indicators/*": "./src/indicators/*.indicator.js"
+  },
+  "homepage": "https://github.com/tarun984012/algo-expert#readme",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "cls-hooked": "^4.2.2",
+    "dotenv": "^16.4.7",
+    "envalid": "^8.0.0",
+    "express": "^5.1.0",
+    "http-status": "^2.1.0",
+    "kiteconnect": "^5.0.1",
+    "mongoose": "^8.13.2",
+    "node-cron": "^3.0.3",
+    "technicalindicators": "^3.1.0"
+  }
+}

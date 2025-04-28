@@ -1,0 +1,1 @@
+{"time":"2025-04-21T10:27:00+0530","open":79093.78,"high":79176.74,"low":79083.13,"close":79162.86,"volume":0,"supertrend":null,"trend":null}

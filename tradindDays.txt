@@ -1,0 +1,5 @@
+Sensex - ["Monday","Friday"]
+Nifty - ["Wednesday","Thursday"]
+Combined - ["Tuesday"]
+
+Gap Up, Gap Down -- Only 25% capital
