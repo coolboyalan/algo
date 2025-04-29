@@ -13,16 +13,16 @@ import kite from "#configs/kite";
 // await connectDb(env.DB_URI);
 
 const levels = {
-  tc: 79368.24,
-  bc: 79264.43,
-  r1: 80026.86,
-  r2: 80841.18,
-  r3: 81551.71,
-  r4: 82366.03,
-  s1: 78502.01,
-  s2: 77791.48,
-  s3: 76977.16,
-  s4: 76266.63,
+  tc: 24287.19,
+  bc: 24204.57,
+  r1: 24437.72,
+  r2: 24546.93,
+  r3: 24738.77,
+  r4: 24847.98,
+  s1: 24136.67,
+  s2: 23944.83,
+  s3: 23835.62,
+  s4: 23643.78,
 };
 
 let lastTrade = null;
@@ -287,7 +287,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `SENSEX25506${assetPrice}${direction}`;
+      const symbol = `NIFTY25430${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -311,8 +311,8 @@ async function exitOrder(symbol) {
   console.log(`Sell order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "BFO",
-    quantity: 20,
+    exchange: "NFO",
+    quantity: 75,
     product: "MIS", // or MIS/CNC
     transaction_type: "SELL", // original position was BUY
   };
@@ -335,8 +335,8 @@ async function newOrder(symbol) {
   console.log(`Buy order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "BFO",
-    quantity: 20,
+    exchange: "NFO",
+    quantity: 75,
     product: "MIS", // or MIS/CNC
     transaction_type: "BUY",
   };
