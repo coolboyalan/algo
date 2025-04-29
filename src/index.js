@@ -123,7 +123,7 @@ const ACCESS_TOKEN = obj.accessToken;
 
 const getHistoricalData = async (to, from) => {
   try {
-    const INSTRUMENT_TOKEN = "265"; // NIFTY 50
+    const INSTRUMENT_TOKEN = "26000"; // NIFTY 50
     const INTERVAL = "3minute";
     const FROM = from ?? "2025-04-15 09:15:00";
     const TO = to ?? "2025-04-15 09:18:00";
