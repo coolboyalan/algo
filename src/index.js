@@ -228,7 +228,7 @@ cron.schedule("* * * * * *", async () => {
 
       const { bc, tc, r1, r2, r3, r4, s1, s2, s3, s4 } = levels;
 
-      const BUFFER = 45;
+      const BUFFER = 15;
       let signal = "No Action";
       let reason = "Price is in a neutral zone.";
       let direction;
@@ -327,9 +327,53 @@ async function exitOrder(symbol) {
     variety: "regular",
   });
 
+  // Order Payload
+  const orderData = {
+    quantity: 1,
+    product: "D",
+    validity: "DAY",
+    price: 0,
+    tag: "optional_custom_tag", // you can leave it empty or give a string
+    instrument_token: "NSE_EQ|INE848E01016",
+    order_type: "MARKET",
+    transaction_type: "SELL",
+    disclosed_quantity: 0,
+    trigger_price: 0,
+    is_amo: false,
+  };
+
   console.log(order);
   console.log(`Sell order executed for ${symbol}`);
 }
+
+// API Endpoint
+const apiUrl = "https://api-hft.upstox.com/v2/order/place";
+
+// Make the API Call
+async function placeOrder(orderData) {
+  try {
+    const response = await axios.post(apiUrl, orderData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    console.log("Order placed successfully:", response.data);
+  } catch (error) {
+    if (error.response) {
+      // Server responded with a status other than 2xx
+      console.error("Error placing order:", error.response.data);
+    } else {
+      // Some other error
+      console.error("Error:", error.message);
+    }
+  }
+}
+
+// Call the function
+placeOrder();
 
 async function newOrder(symbol) {
   console.log(`Buy order executed for ${symbol}`);
@@ -350,6 +394,21 @@ async function newOrder(symbol) {
     order_type: "MARKET", // square off immediately
     variety: "regular",
   });
+
+  // Order Payload
+  const orderData = {
+    quantity: 1,
+    product: "D",
+    validity: "DAY",
+    price: 0,
+    tag: "optional_custom_tag", // you can leave it empty or give a string
+    instrument_token: "NSE_EQ|INE848E01016",
+    order_type: "MARKET",
+    transaction_type: "BUY",
+    disclosed_quantity: 0,
+    trigger_price: 0,
+    is_amo: false,
+  };
 
   console.log(order);
   console.log(`Buy order executed for ${symbol}`);
