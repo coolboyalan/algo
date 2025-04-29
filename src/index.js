@@ -27,7 +27,58 @@ const levels = {
 
 let lastTrade = null;
 let lastAsset = null;
-let lastOrderId = "250421700602393";
+
+const STATE = "secureRandomString"; // Optional state value
+
+server.get("/upstox-login", (req, res) => {
+  const loginURL = `https://api.upstox.com/v2/login/authorization/dialog?response_type=code&client_id=${env.UPSTOX_KEY}&redirect_uri=${encodeURIComponent(env.UPSTOX_REDIRECT_URI)}&state=${STATE}`;
+  res.send(`<a href="${loginURL}">Login with Upstox</a>`);
+  console.log("🔗 Opening Upstox login URL in browser...");
+  open(loginURL);
+});
+
+server.get("/upstox-callback", async (req, res) => {
+  const { code, state } = req.query;
+
+  if (!code) return res.status(400).send("Authorization code not provided");
+
+  console.log("🔐 Received code:", code);
+  console.log("🔁 Exchanging code for access token...");
+
+  try {
+    const tokenRes = await axios.post(
+      "https://api.upstox.com/v2/login/authorization/token",
+      new URLSearchParams({
+        code,
+        client_id: env.UPSTOX_KEY,
+        client_secret: env.UPSTOX_SECRET,
+        redirect_uri: env.UPSTOX_REDIRECT_URI,
+        grant_type: "authorization_code",
+      }).toString(),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          accept: "application/json",
+        },
+      },
+    );
+
+    const { access_token, refresh_token, expires_at } = tokenRes.data;
+    console.log("✅ Access Token:", access_token);
+
+    res.send(`
+      <h2>✅ Authentication Successful!</h2>
+      <p><strong>Access Token:</strong> ${access_token}</p>
+      <p><strong>Expires In:</strong> ${expires_at} seconds</p>
+    `);
+  } catch (err) {
+    console.error(
+      "❌ Token exchange failed:",
+      err.response?.data || err.message,
+    );
+    res.status(500).send("Token exchange failed.");
+  }
+});
 
 server.get("/", async (req, res) => {
   const { request_token } = req.query;

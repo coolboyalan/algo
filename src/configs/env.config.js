@@ -8,6 +8,10 @@ const env = cleanEnv(process.env, {
   SECRET: str(),
   ACCESS_TOKEN: str(),
   DB_URI: str(),
+  UPSTOX_KEY: str(),
+  UPSTOX_SECRET: str(),
+  UPSTOX_REDIRECT_URI: str(),
+  UPSTOX_ACCESS_TOKEN: str(),
 });
 
 export default env;
