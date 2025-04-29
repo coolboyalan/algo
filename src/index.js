@@ -213,8 +213,8 @@ cron.schedule("* * * * * *", async () => {
       // FROM = IST time - 3 minutes
       const fromTime = formatDate(new Date(istNow.getTime() - 3 * 60 * 1000));
       let [data] = await kite.getHistoricalData(
-        // 256265,
-        265,
+        256265,
+        // 265,
         "3minute",
         fromTime,
         toTime,
