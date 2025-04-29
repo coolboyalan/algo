@@ -9,6 +9,7 @@ import { KiteConnect } from "kiteconnect";
 import { getLastTradingDayOHLC } from "#services/dailyLevel";
 import cron from "node-cron";
 import kite from "#configs/kite";
+import findInstrumentToken from "../fileReader.js";
 
 // await connectDb(env.DB_URI);
 
@@ -329,18 +330,25 @@ async function exitOrder(symbol) {
 
   // Order Payload
   const orderData = {
-    quantity: 1,
     product: "D",
     validity: "DAY",
     price: 0,
-    tag: "optional_custom_tag", // you can leave it empty or give a string
-    instrument_token: "NSE_EQ|INE848E01016",
+    tag: "", // you can leave it empty or give a string
     order_type: "MARKET",
     transaction_type: "SELL",
     disclosed_quantity: 0,
     trigger_price: 0,
     is_amo: false,
   };
+
+  try {
+    const instrument = await findInstrumentToken(symbol);
+    orderData.quantity = instrument.lot_size;
+    orderData.instrument_token = instrument.instrument_token;
+    await placeOrder(orderData);
+  } catch (error) {
+    console.error(error.message);
+  }
 
   console.log(order);
   console.log(`Sell order executed for ${symbol}`);
@@ -354,7 +362,7 @@ async function placeOrder(orderData) {
   try {
     const response = await axios.post(apiUrl, orderData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${env.UPSTOX_ACCESS_TOKEN}`,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
@@ -371,9 +379,6 @@ async function placeOrder(orderData) {
     }
   }
 }
-
-// Call the function
-placeOrder();
 
 async function newOrder(symbol) {
   console.log(`Buy order executed for ${symbol}`);
@@ -397,18 +402,25 @@ async function newOrder(symbol) {
 
   // Order Payload
   const orderData = {
-    quantity: 1,
     product: "D",
     validity: "DAY",
     price: 0,
-    tag: "optional_custom_tag", // you can leave it empty or give a string
-    instrument_token: "NSE_EQ|INE848E01016",
+    tag: "", // you can leave it empty or give a string
     order_type: "MARKET",
     transaction_type: "BUY",
     disclosed_quantity: 0,
     trigger_price: 0,
     is_amo: false,
   };
+
+  try {
+    const instrument = await findInstrumentToken(symbol);
+    orderData.quantity = instrument.lot_size;
+    orderData.instrument_token = instrument.instrument_token;
+    await placeOrder(orderData);
+  } catch (error) {
+    console.error(error.message);
+  }
 
   console.log(order);
   console.log(`Buy order executed for ${symbol}`);
@@ -425,3 +437,6 @@ async function newOrder(symbol) {
 //   const data = await getLastTradingDayOHLC(265);
 //   console.log(data)
 // });
+
+const token = await findInstrumentToken("NIFTY2543023000CE");
+console.log(token);

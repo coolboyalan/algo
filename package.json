@@ -33,6 +33,7 @@
   "dependencies": {
     "axios": "^1.8.4",
     "cls-hooked": "^4.2.2",
+    "csv-parser": "^3.2.0",
     "dotenv": "^16.4.7",
     "envalid": "^8.0.0",
     "express": "^5.1.0",
