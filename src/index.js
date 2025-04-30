@@ -350,7 +350,7 @@ async function exitOrder(symbol) {
     console.error(error.message);
   }
 
-  console.log(order);
+  // console.log(order);
   console.log(`Sell order executed for ${symbol}`);
 }
 
@@ -419,10 +419,13 @@ async function newOrder(symbol) {
     orderData.instrument_token = instrument.instrument_token;
     await placeOrder(orderData);
   } catch (error) {
+    lastTrade = null;
+    lastAsset = null;
+
     console.error(error.message);
   }
 
-  console.log(order);
+  // console.log(order);
   console.log(`Buy order executed for ${symbol}`);
 }
 
