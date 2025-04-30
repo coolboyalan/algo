@@ -341,14 +341,14 @@ async function exitOrder(symbol) {
     is_amo: false,
   };
 
-  try {
-    const instrument = await findInstrumentToken(symbol);
-    orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_token;
-    await placeOrder(orderData);
-  } catch (error) {
-    console.error(error.message);
-  }
+  // try {
+  //   const instrument = await findInstrumentToken(symbol);
+  //   orderData.quantity = instrument.lot_size;
+  //   orderData.instrument_token = instrument.instrument_token;
+  //   await placeOrder(orderData);
+  // } catch (error) {
+  //   console.error(error.message);
+  // }
 
   console.log(order);
   console.log(`Sell order executed for ${symbol}`);
@@ -413,14 +413,14 @@ async function newOrder(symbol) {
     is_amo: false,
   };
 
-  try {
-    const instrument = await findInstrumentToken(symbol);
-    orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_token;
-    await placeOrder(orderData);
-  } catch (error) {
-    console.error(error.message);
-  }
+  // try {
+  //   const instrument = await findInstrumentToken(symbol);
+  //   orderData.quantity = instrument.lot_size;
+  //   orderData.instrument_token = instrument.instrument_token;
+  //   await placeOrder(orderData);
+  // } catch (error) {
+  //   console.error(error.message);
+  // }
 
   console.log(order);
   console.log(`Buy order executed for ${symbol}`);
