@@ -176,12 +176,30 @@ const getHistoricalData = async (to, from) => {
   }
 };
 
+let config = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "https://api.upstox.com/v2/user/profile",
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${env.UPSTOX_ACCESS_TOKEN}`,
+  },
+};
+
 cron.schedule("* * * * * *", async () => {
   const now = new Date();
 
   try {
     const positions = await kite.getPositions();
     console.log(new Date());
+    axios(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     // console.log(positions, new Date());
 
     // Get IST time by adding offset to UTC
