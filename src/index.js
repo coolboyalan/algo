@@ -194,7 +194,7 @@ cron.schedule("* * * * * *", async () => {
     console.log(new Date());
     axios(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        console.log(true, response.data.status);
       })
       .catch((error) => {
         console.log(error);
