@@ -318,15 +318,15 @@ async function exitOrder(symbol) {
     transaction_type: "SELL", // original position was BUY
   };
 
-  const order = await kite.placeOrder("regular", {
-    tradingsymbol: position.tradingsymbol,
-    exchange: position.exchange,
-    quantity: position.quantity,
-    transaction_type: position.transaction_type,
-    product: position.product,
-    order_type: "MARKET", // square off immediately
-    variety: "regular",
-  });
+  // const order = await kite.placeOrder("regular", {
+  //   tradingsymbol: position.tradingsymbol,
+  //   exchange: position.exchange,
+  //   quantity: position.quantity,
+  //   transaction_type: position.transaction_type,
+  //   product: position.product,
+  //   order_type: "MARKET", // square off immediately
+  //   variety: "regular",
+  // });
 
   // Order Payload
   const orderData = {
@@ -341,14 +341,14 @@ async function exitOrder(symbol) {
     is_amo: false,
   };
 
-  // try {
-  //   const instrument = await findInstrumentToken(symbol);
-  //   orderData.quantity = instrument.lot_size;
-  //   orderData.instrument_token = instrument.instrument_token;
-  //   await placeOrder(orderData);
-  // } catch (error) {
-  //   console.error(error.message);
-  // }
+  try {
+    const instrument = await findInstrumentToken(symbol);
+    orderData.quantity = instrument.lot_size;
+    orderData.instrument_token = instrument.instrument_token;
+    await placeOrder(orderData);
+  } catch (error) {
+    console.error(error.message);
+  }
 
   console.log(order);
   console.log(`Sell order executed for ${symbol}`);
@@ -390,15 +390,15 @@ async function newOrder(symbol) {
     transaction_type: "BUY",
   };
 
-  const order = await kite.placeOrder("regular", {
-    tradingsymbol: position.tradingsymbol,
-    exchange: position.exchange,
-    quantity: position.quantity,
-    transaction_type: position.transaction_type,
-    product: position.product,
-    order_type: "MARKET", // square off immediately
-    variety: "regular",
-  });
+  // const order = await kite.placeOrder("regular", {
+  //   tradingsymbol: position.tradingsymbol,
+  //   exchange: position.exchange,
+  //   quantity: position.quantity,
+  //   transaction_type: position.transaction_type,
+  //   product: position.product,
+  //   order_type: "MARKET", // square off immediately
+  //   variety: "regular",
+  // });
 
   // Order Payload
   const orderData = {
@@ -413,14 +413,14 @@ async function newOrder(symbol) {
     is_amo: false,
   };
 
-  // try {
-  //   const instrument = await findInstrumentToken(symbol);
-  //   orderData.quantity = instrument.lot_size;
-  //   orderData.instrument_token = instrument.instrument_token;
-  //   await placeOrder(orderData);
-  // } catch (error) {
-  //   console.error(error.message);
-  // }
+  try {
+    const instrument = await findInstrumentToken(symbol);
+    orderData.quantity = instrument.lot_size;
+    orderData.instrument_token = instrument.instrument_token;
+    await placeOrder(orderData);
+  } catch (error) {
+    console.error(error.message);
+  }
 
   console.log(order);
   console.log(`Buy order executed for ${symbol}`);
