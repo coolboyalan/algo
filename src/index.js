@@ -233,7 +233,7 @@ cron.schedule("* * * * * *", async () => {
         console.log("Invalid Price");
       }
 
-      const { bc, tc, r1, r2, r3, r4, s1, s2, s3, s4 } = levels;
+      const { bc, tc, r1, r2, r3, r4, s1, s2, s3, s4 } = global.levels;
 
       const BUFFER = global.levels.buffer;
       let signal = "No Action";
@@ -456,26 +456,26 @@ async function newOrder(symbol) {
 //
 //
 
-const orderData = {
-  product: "I",
-  validity: "DAY",
-  price: 0,
-  tag: "", // you can leave it empty or give a string
-  order_type: "MARKET",
-  transaction_type: "BUY",
-  disclosed_quantity: 0,
-  trigger_price: 0,
-  is_amo: false,
-};
-
-try {
-  const instrument = await findInstrumentToken("SENSEX2550679000PE");
-  orderData.quantity = instrument.lot_size;
-  orderData.instrument_token = instrument.instrument_key;
-  await placeOrder(orderData);
-} catch (error) {
-  lastTrade = null;
-  lastAsset = null;
-
-  console.error(error.message);
-}
+// const orderData = {
+//   product: "I",
+//   validity: "DAY",
+//   price: 0,
+//   tag: "", // you can leave it empty or give a string
+//   order_type: "MARKET",
+//   transaction_type: "BUY",
+//   disclosed_quantity: 0,
+//   trigger_price: 0,
+//   is_amo: false,
+// };
+//
+// try {
+//   const instrument = await findInstrumentToken("SENSEX2550679000PE");
+//   orderData.quantity = instrument.lot_size;
+//   orderData.instrument_token = instrument.instrument_key;
+//   await placeOrder(orderData);
+// } catch (error) {
+//   lastTrade = null;
+//   lastAsset = null;
+//
+//   console.error(error.message);
+// }
