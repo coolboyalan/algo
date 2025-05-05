@@ -15,8 +15,8 @@ import findInstrumentToken from "../fileReader.js";
 global.levels = null;
 let lastPrice;
 
-let lastTrade = "PE";
-let lastAsset = "SENSEX2550681000PE";
+let lastTrade = null;
+let lastAsset = null;
 
 const STATE = "secureRandomString"; // Optional state value
 
