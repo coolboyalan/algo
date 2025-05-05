@@ -12,19 +12,8 @@ import kite from "#configs/kite";
 import findInstrumentToken from "../fileReader.js";
 
 // await connectDb(env.DB_URI);
-
-const levels = {
-  tc: 24287.19,
-  bc: 24204.57,
-  r1: 24437.72,
-  r2: 24546.93,
-  r3: 24738.77,
-  r4: 24847.98,
-  s1: 24136.67,
-  s2: 23944.83,
-  s3: 23835.62,
-  s4: 23643.78,
-};
+global.levels = null;
+let lastPrice;
 
 let lastTrade = null;
 let lastAsset = null;
@@ -87,7 +76,7 @@ server.get("/", async (req, res) => {
 
   const checksum = crypto
     .createHash("sha256")
-    .update(env.KEY + obj.requestToken + env.SECRET)
+    .update(env.KEY + obj.requestToken + env.KITE_SECRET)
     .digest("hex");
 
   try {
@@ -102,7 +91,7 @@ server.get("/", async (req, res) => {
         headers: {
           "X-Kite-Version": "3",
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `token ${env.KEY}:${env.ACCESS_TOKEN}`,
+          Authorization: `token ${env.KEY}:${env.KITE_ACCESS_TOKEN}`,
         },
       },
     );
@@ -136,7 +125,7 @@ const getHistoricalData = async (to, from) => {
     };
 
     const headers = {
-      Authorization: `token ${env.KEY}:${env.ACCESS_TOKEN}`,
+      Authorization: `token ${env.KEY}:${env.KITE_ACCESS_TOKEN}`,
     };
 
     const { data } = await axios.get(url, { headers, params });
@@ -191,7 +180,7 @@ cron.schedule("* * * * * *", async () => {
 
   try {
     const positions = await kite.getPositions();
-    console.log(new Date());
+    console.log(new Date(), global.levels);
     axios(config)
       .then((response) => {
         console.log(true, response.data.status);
@@ -232,8 +221,7 @@ cron.schedule("* * * * * *", async () => {
       // FROM = IST time - 3 minutes
       const fromTime = formatDate(new Date(istNow.getTime() - 3 * 60 * 1000));
       let [data] = await kite.getHistoricalData(
-        256265,
-        // 265,
+        global.levels.token,
         "3minute",
         fromTime,
         toTime,
@@ -247,7 +235,7 @@ cron.schedule("* * * * * *", async () => {
 
       const { bc, tc, r1, r2, r3, r4, s1, s2, s3, s4 } = levels;
 
-      const BUFFER = 15;
+      const BUFFER = global.levels.buffer;
       let signal = "No Action";
       let reason = "Price is in a neutral zone.";
       let direction;
@@ -306,7 +294,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `NIFTY25430${assetPrice}${direction}`;
+      const symbol = `SENSEX25506${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -330,25 +318,25 @@ async function exitOrder(symbol) {
   console.log(`Sell order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "NFO",
-    quantity: 75,
+    exchange: "BFO",
+    quantity: 20,
     product: "MIS", // or MIS/CNC
     transaction_type: "SELL", // original position was BUY
   };
 
-  // const order = await kite.placeOrder("regular", {
-  //   tradingsymbol: position.tradingsymbol,
-  //   exchange: position.exchange,
-  //   quantity: position.quantity,
-  //   transaction_type: position.transaction_type,
-  //   product: position.product,
-  //   order_type: "MARKET", // square off immediately
-  //   variety: "regular",
-  // });
+  const order = await kite.placeOrder("regular", {
+    tradingsymbol: position.tradingsymbol,
+    exchange: position.exchange,
+    quantity: position.quantity,
+    transaction_type: position.transaction_type,
+    product: position.product,
+    order_type: "MARKET", // square off immediately
+    variety: "regular",
+  });
 
   // Order Payload
   const orderData = {
-    product: "D",
+    product: "I",
     validity: "DAY",
     price: 0,
     tag: "", // you can leave it empty or give a string
@@ -402,31 +390,31 @@ async function newOrder(symbol) {
   console.log(`Buy order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "NFO",
-    quantity: 75,
+    exchange: "BFO",
+    quantity: 20,
     product: "MIS", // or MIS/CNC
     transaction_type: "BUY",
   };
 
-  // try {
-  //   const order = await kite.placeOrder("regular", {
-  //     tradingsymbol: position.tradingsymbol,
-  //     exchange: position.exchange,
-  //     quantity: position.quantity,
-  //     transaction_type: position.transaction_type,
-  //     product: position.product,
-  //     order_type: "MARKET", // square off immediately
-  //     variety: "regular",
-  //   });
-  // } catch (e) {
-  //   lastTrade = null;
-  //   lastAsset = null;
-  //   console.log(e);
-  // }
-  //
+  try {
+    const order = await kite.placeOrder("regular", {
+      tradingsymbol: position.tradingsymbol,
+      exchange: position.exchange,
+      quantity: position.quantity,
+      transaction_type: position.transaction_type,
+      product: position.product,
+      order_type: "MARKET", // square off immediately
+      variety: "regular",
+    });
+  } catch (e) {
+    lastTrade = null;
+    lastAsset = null;
+    console.log(e);
+  }
+
   // Order Payload
   const orderData = {
-    product: "D",
+    product: "I",
     validity: "DAY",
     price: 0,
     tag: "", // you can leave it empty or give a string
@@ -464,6 +452,4 @@ async function newOrder(symbol) {
 //   const data = await getLastTradingDayOHLC(265);
 //   console.log(data)
 // });
-
-const token = await findInstrumentToken("NIFTY2543023000CE");
-console.log(token);
+//

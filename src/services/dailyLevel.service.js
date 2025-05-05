@@ -1,12 +1,23 @@
 import DailyLevel from "#models/dailyLevel";
 import Service from "#services/base";
+import {
+  isMondayOrFridayInIST,
+  getISTMidnightFakeUTCString,
+} from "#utils/dayChecker";
+
 import kite from "#configs/kite";
 
 class DailyLevelService extends Service {
   static Model = DailyLevel;
 
-  static async create(data) {
+  static async create(token) {
+    const today = getISTMidnightFakeUTCString();
+    const data = await getLastTradingDayOHLC(token);
+    data.forDay = today;
     const { high, low, close } = data;
+
+    const existing = await this.Model.findOne({ forDay: today });
+    if (existing) return existing;
 
     const pivot = parseFloat(((high + low + close) / 3).toFixed(2));
     const bc = parseFloat(((high + low) / 2).toFixed(2));
@@ -35,7 +46,9 @@ class DailyLevelService extends Service {
       s2,
       s3,
       s4,
-      date,
+      date: data.date,
+      forDay: today,
+      token,
       buffer,
     });
 
@@ -89,3 +102,9 @@ export async function getLastTradingDayOHLC(instrumentToken) {
 }
 
 export default DailyLevelService;
+
+const today = getISTMidnightFakeUTCString();
+
+DailyLevelService.Model.findOne({ forDay: today }).then(
+  (a) => (global.levels = a),
+);

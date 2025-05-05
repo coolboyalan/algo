@@ -1,12 +1,16 @@
-import BaseSchema from "#models/base";
 import mongoose from "mongoose";
+import BaseSchema from "#models/base";
 
 const dailyLevelSchema = new BaseSchema({
+  token: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     required: true,
   },
-  dataDate: {
+  forDay: {
     type: Date,
     required: true,
   },
@@ -55,5 +59,7 @@ const dailyLevelSchema = new BaseSchema({
     required: true,
   },
 });
+
+dailyLevelSchema.index({ token: 1, date: 1, forDay: 1 }, { unique: true });
 
 export default mongoose.model("dailyLevel", dailyLevelSchema);

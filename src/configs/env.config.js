@@ -5,8 +5,8 @@ configDotenv();
 
 const env = cleanEnv(process.env, {
   KEY: str(),
-  SECRET: str(),
-  ACCESS_TOKEN: str(),
+  KITE_SECRET: str(),
+  KITE_ACCESS_TOKEN: str(),
   DB_URI: str(),
   UPSTOX_KEY: str(),
   UPSTOX_SECRET: str(),
