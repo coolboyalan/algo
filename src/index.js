@@ -15,8 +15,8 @@ import findInstrumentToken from "../fileReader.js";
 global.levels = null;
 let lastPrice;
 
-let lastTrade = null;
-let lastAsset = null;
+let lastTrade = "PE";
+let lastAsset = "SENSEX2550681000PE";
 
 const STATE = "secureRandomString"; // Optional state value
 
@@ -180,7 +180,7 @@ cron.schedule("* * * * * *", async () => {
 
   try {
     const positions = await kite.getPositions();
-    console.log(new Date(), global.levels);
+    console.log(new Date());
     axios(config)
       .then((response) => {
         console.log(true, response.data.status);
@@ -350,7 +350,7 @@ async function exitOrder(symbol) {
   try {
     const instrument = await findInstrumentToken(symbol);
     orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_token;
+    orderData.instrument_token = instrument.instrument_key;
     await placeOrder(orderData);
   } catch (error) {
     console.error(error.message);
@@ -428,7 +428,7 @@ async function newOrder(symbol) {
   try {
     const instrument = await findInstrumentToken(symbol);
     orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_token;
+    orderData.instrument_token = instrument.instrument_key;
     await placeOrder(orderData);
   } catch (error) {
     lastTrade = null;
@@ -453,3 +453,29 @@ async function newOrder(symbol) {
 //   console.log(data)
 // });
 //
+//
+//
+
+const orderData = {
+  product: "I",
+  validity: "DAY",
+  price: 0,
+  tag: "", // you can leave it empty or give a string
+  order_type: "MARKET",
+  transaction_type: "BUY",
+  disclosed_quantity: 0,
+  trigger_price: 0,
+  is_amo: false,
+};
+
+try {
+  const instrument = await findInstrumentToken("SENSEX2550679000PE");
+  orderData.quantity = instrument.lot_size;
+  orderData.instrument_token = instrument.instrument_key;
+  await placeOrder(orderData);
+} catch (error) {
+  lastTrade = null;
+  lastAsset = null;
+
+  console.error(error.message);
+}
