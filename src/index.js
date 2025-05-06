@@ -2,7 +2,7 @@ import calculateSupertrend from "#indicators/supertrend";
 import env from "#configs/env";
 import axios from "axios";
 import crypto, { sign } from "crypto";
-import { server, obj } from "#configs/server";
+import { server, obj, smartAPI } from "#configs/server";
 import fs from "fs";
 import connectDb from "#configs/database";
 import { KiteConnect } from "kiteconnect";
@@ -11,8 +11,88 @@ import cron from "node-cron";
 import kite from "#configs/kite";
 import findInstrumentToken from "../fileReader.js";
 
-// await connectDb(env.DB_URI);
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const filePath = path.join(__dirname, "../OpenAPIScripMaster.json");
+const rawData = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+
+// Convert object to array if needed
+const instrumentList = Array.isArray(rawData)
+  ? rawData
+  : Object.values(rawData);
+
+/**
+ * Finds instrument details by its tradingsymbol (e.g. "NIFTY08MAY2524850CE")
+ */
+function findInstrument(symbol) {
+  return instrumentList.find((item) => item.symbol === symbol);
+}
+
+// Example usage
+async function placeAngelOneOrder(symbol, transaction_type = "BUY") {
+  const instrument = findInstrument(symbol);
+
+  if (!instrument) {
+    console.error("Instrument not found:", symbol);
+    return;
+  }
+
+  const orderPayload = {
+    variety: "NORMAL", // Always use NORMAL for Angel
+    tradingsymbol: instrument.symbol,
+    symboltoken: instrument.token,
+    exchange: instrument.exch_seg,
+    transactiontype: transaction_type, // BUY or SELL
+    ordertype: "MARKET",
+    producttype: "INTRADAY",
+    duration: "DAY",
+    quantity: parseInt(instrument.lotsize),
+    price: "0", // MARKET order
+    triggerprice: "0",
+  };
+
+  try {
+    const response = await smartAPI.placeOrder(orderPayload);
+    console.log("Angel One order placed successfully:", response);
+  } catch (err) {
+    console.error("Error placing Angel One order:", err.message || err);
+  }
+}
+
+function convertToAngelOneSymbol(customSymbol) {
+  const match = customSymbol.match(/^([A-Z]+)(\d{2})(\d)(\d{2})(\d+)(CE|PE)$/);
+  if (!match) return null;
+
+  const [_, name, year, month, day, strike, optionType] = match;
+
+  const monthNames = [
+    "",
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+  ];
+
+  const formattedSymbol = `${name}${day}${monthNames[parseInt(month)]}${20 + parseInt(year)}${strike}${optionType}`;
+  return formattedSymbol;
+}
+
+await connectDb(env.DB_URI);
+
 global.levels = null;
+
 let lastPrice;
 
 let lastTrade = null;
@@ -288,7 +368,7 @@ cron.schedule("* * * * * *", async () => {
       }
 
       if (signal === "Exit") {
-        await exitOrder(lastAsset);
+        // await exitOrder(lastAsset);
         lastTrade = null;
         lastAsset = null;
         return;
@@ -317,7 +397,7 @@ cron.schedule("* * * * * *", async () => {
 async function placeAngelOrder(orderData) {
   try {
     const response = await smartAPI.placeOrder(orderData);
-    console.log("Angel One order placed successfully:", response.data);
+    console.log("Angel One order placed successfully:", response);
   } catch (error) {
     console.error(
       "Error placing Angel One order:",
@@ -366,6 +446,14 @@ async function exitOrder(symbol) {
     await placeOrder(orderData);
   } catch (error) {
     console.error(error.message);
+  }
+
+  try {
+    const angelSymbol = convertToAngelOneSymbol(symbol);
+    const instrument = findInstrument(angelSymbol);
+    await placeAngelOneOrder(instrument, "SELL");
+  } catch (err) {
+    console.log("angel", err);
   }
 
   // console.log(order);
@@ -449,6 +537,14 @@ async function newOrder(symbol) {
     console.error(error.message);
   }
 
+  try {
+    const angelSymbol = convertToAngelOneSymbol(symbol);
+    const instrument = findInstrument(angelSymbol);
+    await placeAngelOneOrder(instrument, "BUY");
+  } catch (err) {
+    console.log("angel", err);
+  }
+
   // console.log(order);
   console.log(`Buy order executed for ${symbol}`);
 }
@@ -491,3 +587,4 @@ async function newOrder(symbol) {
 //
 //   console.error(error.message);
 // }
+//

@@ -35,7 +35,7 @@ server.get("/login", (req, res) => {
   res.redirect(`https://kite.zerodha.com/connect/login?v=3&api_key=${env.KEY}`);
 });
 
-const smartAPI = new SmartAPI({
+export const smartAPI = new SmartAPI({
   api_key: process.env.ANGEL_KEY,
   // ANGEL_SECRET is not required by SDK here unless using JWT-based flows
 });
