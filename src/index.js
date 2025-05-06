@@ -294,7 +294,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `SENSEX25506${assetPrice}${direction}`;
+      const symbol = `NIFTY25508${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -314,12 +314,24 @@ cron.schedule("* * * * * *", async () => {
   }
 });
 
+async function placeAngelOrder(orderData) {
+  try {
+    const response = await smartAPI.placeOrder(orderData);
+    console.log("Angel One order placed successfully:", response.data);
+  } catch (error) {
+    console.error(
+      "Error placing Angel One order:",
+      error.response?.data || error.message,
+    );
+  }
+}
+
 async function exitOrder(symbol) {
   console.log(`Sell order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "BFO",
-    quantity: 20,
+    exchange: "NFO",
+    quantity: 75,
     product: "MIS", // or MIS/CNC
     transaction_type: "SELL", // original position was BUY
   };
@@ -390,8 +402,8 @@ async function newOrder(symbol) {
   console.log(`Buy order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "BFO",
-    quantity: 20,
+    exchange: "NFO",
+    quantity: 75,
     product: "MIS", // or MIS/CNC
     transaction_type: "BUY",
   };

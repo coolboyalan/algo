@@ -12,6 +12,11 @@ const env = cleanEnv(process.env, {
   UPSTOX_SECRET: str(),
   UPSTOX_REDIRECT_URI: str(),
   UPSTOX_ACCESS_TOKEN: str(),
+  ANGEL_CLIENT: str(),
+  ANGEL_PASS: str(),
+  ANGEL_SECRET: str(),
+  ANGEL_KEY: str(),
+  ANGEL_ACCESS_TOKEN: str(),
 });
 
 export default env;
