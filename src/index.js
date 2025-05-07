@@ -85,7 +85,7 @@ function convertToAngelOneSymbol(customSymbol) {
     "DEC",
   ];
 
-  const formattedSymbol = `${name}${day}${monthNames[parseInt(month)]}${20 + parseInt(year)}${strike}${optionType}`;
+  const formattedSymbol = `${name}${day}${monthNames[parseInt(month)]}${parseInt(year)}${strike}${optionType}`;
   return formattedSymbol;
 }
 
@@ -450,8 +450,7 @@ async function exitOrder(symbol) {
 
   try {
     const angelSymbol = convertToAngelOneSymbol(symbol);
-    const instrument = findInstrument(angelSymbol);
-    await placeAngelOneOrder(instrument, "SELL");
+    await placeAngelOneOrder(angelSymbol, "SELL");
   } catch (err) {
     console.log("angel", err);
   }
@@ -532,6 +531,7 @@ async function newOrder(symbol) {
     await placeOrder(orderData);
   } catch (error) {
     lastTrade = null;
+    false;
     lastAsset = null;
 
     console.error(error.message);
@@ -539,8 +539,7 @@ async function newOrder(symbol) {
 
   try {
     const angelSymbol = convertToAngelOneSymbol(symbol);
-    const instrument = findInstrument(angelSymbol);
-    await placeAngelOneOrder(instrument, "BUY");
+    await placeAngelOneOrder(angelSymbol, "BUY");
   } catch (err) {
     console.log("angel", err);
   }
@@ -567,7 +566,7 @@ async function newOrder(symbol) {
 // const orderData = {
 //   product: "I",
 //   validity: "DAY",
-//   price: 0,
+//   price: 0,3
 //   tag: "", // you can leave it empty or give a string
 //   order_type: "MARKET",
 //   transaction_type: "BUY",
@@ -587,4 +586,5 @@ async function newOrder(symbol) {
 //
 //   console.error(error.message);
 // }
+//
 //
