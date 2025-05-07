@@ -368,7 +368,7 @@ cron.schedule("* * * * * *", async () => {
       }
 
       if (signal === "Exit") {
-        // await exitOrder(lastAsset);
+        await exitOrder(lastAsset);
         lastTrade = null;
         lastAsset = null;
         return;
