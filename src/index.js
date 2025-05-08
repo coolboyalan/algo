@@ -13,6 +13,7 @@ import findInstrumentToken from "../fileReader.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
+import DailyLevelService from "#services/dailyLevel";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -257,10 +258,8 @@ let config = {
 
 cron.schedule("* * * * * *", async () => {
   const now = new Date();
-
   try {
     const positions = await kite.getPositions();
-    console.log(new Date());
     axios(config)
       .then((response) => {
         console.log(true, response.data.status);
@@ -269,8 +268,7 @@ cron.schedule("* * * * * *", async () => {
         console.log(error);
       });
 
-    // console.log(positions, new Date());
-
+    console.log(new Date());
     // Get IST time by adding offset to UTC
     const istOffset = 5.5 * 60 * 60 * 1000;
     const istNow = new Date(now.getTime() + istOffset);
@@ -281,7 +279,7 @@ cron.schedule("* * * * * *", async () => {
 
     // Only run every 3 minutes at 00 second, between 09:18 and 15:30 IST
     const isInRange =
-      (hour === 9 && minute >= 18) ||
+      (hour === 9 && minute >= 30) ||
       (hour > 9 && hour < 15) ||
       (hour === 15 && minute <= 30);
     //
@@ -588,3 +586,5 @@ async function newOrder(symbol) {
 // }
 //
 //
+// const data = await DailyLevelService.get(null, { forDay: "2025-05-08" });
+// console.log(data);
