@@ -414,15 +414,20 @@ async function exitOrder(symbol) {
     transaction_type: "SELL", // original position was BUY
   };
 
-  const order = await kite.placeOrder("regular", {
-    tradingsymbol: position.tradingsymbol,
-    exchange: position.exchange,
-    quantity: position.quantity,
-    transaction_type: position.transaction_type,
-    product: position.product,
-    order_type: "MARKET", // square off immediately
-    variety: "regular",
-  });
+  try {
+    const order = await kite.placeOrder("regular", {
+      tradingsymbol: position.tradingsymbol,
+      exchange: position.exchange,
+      quantity: position.quantity,
+      transaction_type: position.transaction_type,
+      product: position.product,
+      order_type: "MARKET", // square off immediately
+      variety: "regular",
+    });
+    console.log("Kite placed");
+  } catch (e) {
+    console.log("Zerodha", e);
+  }
 
   // Order Payload
   const orderData = {
