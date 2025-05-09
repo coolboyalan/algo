@@ -1,19 +1,22 @@
 import BaseSchema from "#models/base";
+import mongoose from "mongoose";
 
 const tradeSchema = new BaseSchema({
-  direction:{
-    type:String,
-    enum:["Long","Short"]
+  direction: {
+    type: String,
+    enum: ["PE", "CE"],
   },
-  asset:{
-    type:String,
-    required:true
+  asset: {
+    type: String,
+    required: true,
   },
-  baseAsseet:{
-    type:String
+  quantity: {
+    type: Number,
+    reqyired: true,
   },
-  entryPrice:{
-    type:Number,
-    required:true
-  }
-})
+  time: {
+    type: Date,
+  },
+});
+
+export default mongoose.model("trade", tradeSchema);

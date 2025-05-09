@@ -372,7 +372,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `NIFTY25508${assetPrice}${direction}`;
+      const symbol = `SENSEX25513${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -408,8 +408,8 @@ async function exitOrder(symbol) {
   console.log(`Sell order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "NFO",
-    quantity: 75,
+    exchange: "BFO",
+    quantity: 20,
     product: "MIS", // or MIS/CNC
     transaction_type: "SELL", // original position was BUY
   };
@@ -487,8 +487,8 @@ async function newOrder(symbol) {
   console.log(`Buy order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "NFO",
-    quantity: 75,
+    exchange: "BFO",
+    quantity: 20,
     product: "MIS", // or MIS/CNC
     transaction_type: "BUY",
   };
@@ -588,4 +588,5 @@ async function newOrder(symbol) {
 //
 // const data = await DailyLevelService.get(null, { forDay: "2025-05-08" });
 // console.log(data);
-const instrument = await findInstrumentToken("NIFTY2550824000CE");
+const instrument = await findInstrumentToken("SENSEX2551380000CE");
+console.log(instrument);
