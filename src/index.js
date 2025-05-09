@@ -503,6 +503,7 @@ async function newOrder(symbol) {
       order_type: "MARKET", // square off immediately
       variety: "regular",
     });
+    console.log("Kite placed");
   } catch (e) {
     lastTrade = null;
     lastAsset = null;
@@ -527,6 +528,7 @@ async function newOrder(symbol) {
     orderData.quantity = instrument.lot_size;
     orderData.instrument_token = instrument.instrument_key;
     await placeOrder(orderData);
+    console.log("upstox placed");
   } catch (error) {
     lastTrade = null;
     false;
@@ -538,6 +540,7 @@ async function newOrder(symbol) {
   try {
     const angelSymbol = convertToAngelOneSymbol(symbol);
     await placeAngelOneOrder(angelSymbol, "BUY");
+    console.log("Angel placed");
   } catch (err) {
     console.log("angel", err);
   }
