@@ -586,7 +586,7 @@ async function newOrder(symbol) {
 // }
 //
 //
-// const data = await DailyLevelService.get(null, { forDay: "2025-05-08" });
-// console.log(data);
+const data = await DailyLevelService.get(null, { forDay: "2025-05-09" });
+console.log(data);
 const instrument = await findInstrumentToken("SENSEX2551380000CE");
 console.log(instrument);
