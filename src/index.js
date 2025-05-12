@@ -430,34 +430,34 @@ async function exitOrder(symbol) {
   }
 
   // Order Payload
-  const orderData = {
-    product: "I",
-    validity: "DAY",
-    price: 0,
-    tag: "", // you can leave it empty or give a string
-    order_type: "MARKET",
-    transaction_type: "SELL",
-    disclosed_quantity: 0,
-    trigger_price: 0,
-    is_amo: false,
-  };
-
-  try {
-    const instrument = await findInstrumentToken(symbol);
-    orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_key;
-    await placeOrder(orderData);
-  } catch (error) {
-    console.error(error.message);
-  }
-
-  try {
-    const angelSymbol = convertToAngelOneSymbol(symbol);
-    await placeAngelOneOrder(angelSymbol, "SELL");
-  } catch (err) {
-    console.log("angel", err);
-  }
-
+  // const orderData = {
+  //   product: "I",
+  //   validity: "DAY",
+  //   price: 0,
+  //   tag: "", // you can leave it empty or give a string
+  //   order_type: "MARKET",
+  //   transaction_type: "SELL",
+  //   disclosed_quantity: 0,
+  //   trigger_price: 0,
+  //   is_amo: false,
+  // };
+  //
+  // try {
+  //   const instrument = await findInstrumentToken(symbol);
+  //   orderData.quantity = instrument.lot_size;
+  //   orderData.instrument_token = instrument.instrument_key;
+  //   await placeOrder(orderData);
+  // } catch (error) {
+  //   console.error(error.message);
+  // }
+  //
+  // try {
+  //   const angelSymbol = convertToAngelOneSymbol(symbol);
+  //   await placeAngelOneOrder(angelSymbol, "SELL");
+  // } catch (err) {
+  //   console.log("angel", err);
+  // }
+  //
   // console.log(order);
   console.log(`Sell order executed for ${symbol}`);
 }
@@ -516,40 +516,40 @@ async function newOrder(symbol) {
   }
 
   // Order Payload
-  const orderData = {
-    product: "I",
-    validity: "DAY",
-    price: 0,
-    tag: "", // you can leave it empty or give a string
-    order_type: "MARKET",
-    transaction_type: "BUY",
-    disclosed_quantity: 0,
-    trigger_price: 0,
-    is_amo: false,
-  };
-
-  try {
-    const instrument = await findInstrumentToken(symbol);
-    orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_key;
-    await placeOrder(orderData);
-    console.log("upstox placed");
-  } catch (error) {
-    lastTrade = null;
-    false;
-    lastAsset = null;
-
-    console.error(error.message);
-  }
-
-  try {
-    const angelSymbol = convertToAngelOneSymbol(symbol);
-    await placeAngelOneOrder(angelSymbol, "BUY");
-    console.log("Angel placed");
-  } catch (err) {
-    console.log("angel", err);
-  }
-
+  // const orderData = {
+  //   product: "I",
+  //   validity: "DAY",
+  //   price: 0,
+  //   tag: "", // you can leave it empty or give a string
+  //   order_type: "MARKET",
+  //   transaction_type: "BUY",
+  //   disclosed_quantity: 0,
+  //   trigger_price: 0,
+  //   is_amo: false,
+  // };
+  //
+  // try {
+  //   const instrument = await findInstrumentToken(symbol);
+  //   orderData.quantity = instrument.lot_size;
+  //   orderData.instrument_token = instrument.instrument_key;
+  //   await placeOrder(orderData);
+  //   console.log("upstox placed");
+  // } catch (error) {
+  //   lastTrade = null;
+  //   false;
+  //   lastAsset = null;
+  //
+  //   console.error(error.message);
+  // }
+  //
+  // try {
+  //   const angelSymbol = convertToAngelOneSymbol(symbol);
+  //   await placeAngelOneOrder(angelSymbol, "BUY");
+  //   console.log("Angel placed");
+  // } catch (err) {
+  //   console.log("angel", err);
+  // }
+  //
   // console.log(order);
   console.log(`Buy order executed for ${symbol}`);
 }
