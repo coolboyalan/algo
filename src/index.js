@@ -372,7 +372,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `SENSEX25513${assetPrice}${direction}`;
+      const symbol = `NIFTY25515${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -594,7 +594,7 @@ async function newOrder(symbol) {
 // }
 //
 //
-const data = await DailyLevelService.get(null, { forDay: "2025-05-09" });
+const data = await DailyLevelService.get(null, { forDay: "2025-05-13" });
 console.log(data);
 const instrument = await findInstrumentToken("SENSEX2551380000CE");
 console.log(instrument);

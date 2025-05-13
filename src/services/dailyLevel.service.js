@@ -21,8 +21,8 @@ class DailyLevelService extends Service {
     if (existing) return existing;
 
     const pivot = parseFloat(((high + low + close) / 3).toFixed(2));
-    const bc = parseFloat(((high + low) / 2).toFixed(2));
-    const tc = parseFloat((pivot - bc + pivot).toFixed(2));
+    const tc = parseFloat(((high + low) / 2).toFixed(2));
+    const bc = parseFloat((pivot - tc + pivot).toFixed(2));
     const r1 = parseFloat((2 * pivot - low).toFixed(2));
     const r2 = parseFloat((pivot + (high - low)).toFixed(2));
     const r3 = parseFloat((r1 + (high - low)).toFixed(2));
