@@ -414,20 +414,20 @@ async function exitOrder(symbol) {
     transaction_type: "SELL", // original position was BUY
   };
 
-  // try {
-  //   const order = await kite.placeOrder("regular", {
-  //     tradingsymbol: position.tradingsymbol,
-  //     exchange: position.exchange,
-  //     quantity: position.quantity,
-  //     transaction_type: position.transaction_type,
-  //     product: position.product,
-  //     order_type: "MARKET", // square off immediately
-  //     variety: "regular",
-  //   });
-  //   console.log("Kite placed");
-  // } catch (e) {
-  //   console.log("Zerodha", e);
-  // }
+  try {
+    const order = await kite.placeOrder("regular", {
+      tradingsymbol: position.tradingsymbol,
+      exchange: position.exchange,
+      quantity: position.quantity,
+      transaction_type: position.transaction_type,
+      product: position.product,
+      order_type: "MARKET", // square off immediately
+      variety: "regular",
+    });
+    console.log("Kite placed");
+  } catch (e) {
+    console.log("Zerodha", e);
+  }
 
   // Order Payload
   const orderData = {
@@ -451,12 +451,12 @@ async function exitOrder(symbol) {
     console.error(error.message);
   }
 
-  try {
-    const angelSymbol = convertToAngelOneSymbol(symbol);
-    await placeAngelOneOrder(angelSymbol, "SELL");
-  } catch (err) {
-    console.log("angel", err);
-  }
+  // try {
+  //   const angelSymbol = convertToAngelOneSymbol(symbol);
+  //   await placeAngelOneOrder(angelSymbol, "SELL");
+  // } catch (err) {
+  //   console.log("angel", err);
+  // }
   //
   // console.log(order);
   console.log(`Sell order executed for ${symbol}`);
@@ -498,22 +498,22 @@ async function newOrder(symbol) {
     transaction_type: "BUY",
   };
 
-  // try {
-  //   const order = await kite.placeOrder("regular", {
-  //     tradingsymbol: position.tradingsymbol,
-  //     exchange: position.exchange,
-  //     quantity: position.quantity,
-  //     transaction_type: position.transaction_type,
-  //     product: position.product,
-  //     order_type: "MARKET", // square off immediately
-  //     variety: "regular",
-  //   });
-  //   console.log("Kite placed");
-  // } catch (e) {
-  //   lastTrade = null;
-  //   lastAsset = null;
-  //   console.log(e);
-  // }
+  try {
+    const order = await kite.placeOrder("regular", {
+      tradingsymbol: position.tradingsymbol,
+      exchange: position.exchange,
+      quantity: position.quantity,
+      transaction_type: position.transaction_type,
+      product: position.product,
+      order_type: "MARKET", // square off immediately
+      variety: "regular",
+    });
+    console.log("Kite placed");
+  } catch (e) {
+    lastTrade = null;
+    lastAsset = null;
+    console.log(e);
+  }
 
   const orderData = {
     product: "I",
@@ -541,59 +541,14 @@ async function newOrder(symbol) {
     console.error(error.message);
   }
 
-  try {
-    const angelSymbol = convertToAngelOneSymbol(symbol);
-    await placeAngelOneOrder(angelSymbol, "BUY");
-    console.log("Angel placed");
-  } catch (err) {
-    console.log("angel", err);
-  }
+  // try {
+  //   const angelSymbol = convertToAngelOneSymbol(symbol);
+  //   await placeAngelOneOrder(angelSymbol, "BUY");
+  //   console.log("Angel placed");
+  // } catch (err) {
+  //   console.log("angel", err);
+  // }
 
   // console.log(order);
   console.log(`Buy order executed for ${symbol}`);
 }
-
-// exitOrder("SENSEX2542274000PE");
-
-// cron.schedule("1 * * * *", async () => {
-//   const now = new Date();
-//
-//   // Get IST time
-//   const istOffset = 5.5 * 60 * 60 * 1000;
-//   const istNow = new Date(now.getTime() + istOffset);
-//   const data = await getLastTradingDayOHLC(265);
-//   console.log(data)
-// });
-//
-//
-//
-
-// const orderData = {
-//   product: "I",
-//   validity: "DAY",
-//   price: 0,3
-//   tag: "", // you can leave it empty or give a string
-//   order_type: "MARKET",
-//   transaction_type: "BUY",
-//   disclosed_quantity: 0,
-//   trigger_price: 0,
-//   is_amo: false,
-// };
-//
-// try {
-//   const instrument = await findInstrumentToken("SENSEX2550679000PE");
-//   orderData.quantity = instrument.lot_size;
-//   orderData.instrument_token = instrument.instrument_key;
-//   await placeOrder(orderData);
-// } catch (error) {
-//   lastTrade = null;
-//   lastAsset = null;
-//
-//   console.error(error.message);
-// }
-//
-//
-const data = await DailyLevelService.get(null, { forDay: "2025-05-13" });
-console.log(data);
-const instrument = await findInstrumentToken("SENSEX2551380000CE");
-console.log(instrument);
