@@ -12,6 +12,11 @@ export const obj = {
   accesstoken: "cxobkqajgwe1efisb1dmp0mlxtoodg8k",
 };
 
+export const localEnv = {
+  UPSTOX_ACCESS_TOKEN: env.UPSTOX_ACCESS_TOKEN,
+  KITE_ACCESS_TOKEN: env.KITE_ACCESS_TOKEN,
+};
+
 await connectDB(env.DB_URI);
 
 export const server = express();

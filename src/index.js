@@ -2,7 +2,7 @@ import calculateSupertrend from "#indicators/supertrend";
 import env from "#configs/env";
 import axios from "axios";
 import crypto, { sign } from "crypto";
-import { server, obj, smartAPI } from "#configs/server";
+import { server, obj, smartAPI, localEnv } from "#configs/server";
 import fs from "fs";
 import connectDb from "#configs/database";
 import { KiteConnect } from "kiteconnect";
@@ -136,7 +136,7 @@ server.get("/upstox-callback", async (req, res) => {
 
     const { access_token, refresh_token, expires_at } = tokenRes.data;
     console.log("✅ Access Token:", access_token);
-    env.UPSTOX_ACCESS_TOKEN = access_token;
+    localEnv.UPSTOX_ACCESS_TOKEN = access_token;
 
     res.send(`
       <h2>✅ Authentication Successful!</h2>
@@ -471,7 +471,7 @@ async function placeOrder(orderData) {
   try {
     const response = await axios.post(apiUrl, orderData, {
       headers: {
-        Authorization: `Bearer ${env.UPSTOX_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${localEnv.UPSTOX_ACCESS_TOKEN}`,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
