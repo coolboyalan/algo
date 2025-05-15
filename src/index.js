@@ -247,19 +247,19 @@ const getHistoricalData = async (to, from) => {
   }
 };
 
-let config = {
-  method: "get",
-  maxBodyLength: Infinity,
-  url: "https://api.upstox.com/v2/user/profile",
-  headers: {
-    Accept: "application/json",
-    Authorization: `Bearer ${env.UPSTOX_ACCESS_TOKEN}`,
-  },
-};
-
 cron.schedule("* * * * * *", async () => {
   const now = new Date();
   try {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "https://api.upstox.com/v2/user/profile",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localEnv.UPSTOX_ACCESS_TOKEN}`,
+      },
+    };
+
     const positions = await kite.getPositions();
     axios(config)
       .then((response) => {
