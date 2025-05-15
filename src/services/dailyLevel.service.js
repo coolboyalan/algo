@@ -109,7 +109,7 @@ const today = getISTMidnightFakeUTCString();
 DailyLevelService.Model.findOne({ forDay: today })
   .then((a) => {
     global.levels = a;
-    return;
+    return a;
   })
   .then((e) => {
     console.log(false, e, false);

@@ -32,6 +32,6 @@ const loadRoutes = async () => {
   }
 };
 
-await loadRoutes();
+loadRoutes();
 
 export default router;
