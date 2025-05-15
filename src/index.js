@@ -136,6 +136,7 @@ server.get("/upstox-callback", async (req, res) => {
 
     const { access_token, refresh_token, expires_at } = tokenRes.data;
     console.log("✅ Access Token:", access_token);
+    env.UPSTOX_ACCESS_TOKEN = access_token;
 
     res.send(`
       <h2>✅ Authentication Successful!</h2>
