@@ -373,7 +373,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `NIFTY25515${assetPrice}${direction}`;
+      const symbol = `SENSEX25520${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -415,21 +415,21 @@ async function exitOrder(symbol) {
     transaction_type: "SELL", // original position was BUY
   };
 
-  try {
-    const order = await kite.placeOrder("regular", {
-      tradingsymbol: position.tradingsymbol,
-      exchange: position.exchange,
-      quantity: position.quantity,
-      transaction_type: position.transaction_type,
-      product: position.product,
-      order_type: "MARKET", // square off immediately
-      variety: "regular",
-    });
-    console.log("Kite placed");
-  } catch (e) {
-    console.log("Zerodha", e);
-  }
-
+  // try {
+  //   const order = await kite.placeOrder("regular", {
+  //     tradingsymbol: position.tradingsymbol,
+  //     exchange: position.exchange,
+  //     quantity: position.quantity,
+  //     transaction_type: position.transaction_type,
+  //     product: position.product,
+  //     order_type: "MARKET", // square off immediately
+  //     variety: "regular",
+  //   });
+  //   console.log("Kite placed");
+  // } catch (e) {
+  //   console.log("Zerodha", e);
+  // }
+  //
   // Order Payload
   const orderData = {
     product: "I",
@@ -499,23 +499,23 @@ async function newOrder(symbol) {
     transaction_type: "BUY",
   };
 
-  try {
-    const order = await kite.placeOrder("regular", {
-      tradingsymbol: position.tradingsymbol,
-      exchange: position.exchange,
-      quantity: position.quantity,
-      transaction_type: position.transaction_type,
-      product: position.product,
-      order_type: "MARKET", // square off immediately
-      variety: "regular",
-    });
-    console.log("Kite placed");
-  } catch (e) {
-    lastTrade = null;
-    lastAsset = null;
-    console.log(e);
-  }
-
+  // try {
+  //   const order = await kite.placeOrder("regular", {
+  //     tradingsymbol: position.tradingsymbol,
+  //     exchange: position.exchange,
+  //     quantity: position.quantity,
+  //     transaction_type: position.transaction_type,
+  //     product: position.product,
+  //     order_type: "MARKET", // square off immediately
+  //     variety: "regular",
+  //   });
+  //   console.log("Kite placed");
+  // } catch (e) {
+  //   lastTrade = null;
+  //   lastAsset = null;
+  //   console.log(e);
+  // }
+  //
   const orderData = {
     product: "I",
     validity: "DAY",
