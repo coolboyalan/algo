@@ -360,7 +360,25 @@ cron.schedule("* * * * * *", async () => {
         }
       });
 
-      console.log(signal, reason);
+      const innerLevelMap = { r1, r2, r3, r4, s1, s2, s3, s4, tc, bc };
+
+      Object.entries(innerLevelMap).find(([levelName, level]) => {
+        if (signal === "No Action" && lastTrade) {
+          if (lastTrade === "PE") {
+            if (data.close > level && data.open < level) {
+              signal = "Exit";
+              reason = `Price crossed the level ${levelName}`;
+              return true;
+            }
+          } else {
+            if (data.close < level && data.open > level) {
+              signal = "Exit";
+              reason = `Price crossed the level ${levelName}`;
+              return true;
+            }
+          }
+        }
+      });
 
       if (signal === "No Action") {
         return;
@@ -373,7 +391,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `SENSEX25520${assetPrice}${direction}`;
+      const symbol = `NIFTY25522${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -553,3 +571,23 @@ async function newOrder(symbol) {
   // console.log(order);
   console.log(`Buy order executed for ${symbol}`);
 }
+
+const instrument = await findInstrumentToken("SENSEX2552080000CE");
+
+// axios.get(`https://api.upstox.com/v2/market-quote/ltp`, {
+//   headers: {
+//     'Authorization': `Bearer ${accessToken}`
+//   },
+//   params: {
+//     instrument_key: `${exchange}_${symbol}`
+//   }
+// })
+// .then(response => {
+//   const ltp = response.data.data[`${exchange}_${symbol}`].last_price;
+//   console.log(`LTP of ${symbol}: ₹${ltp}`);
+// })
+// .catch(error => {
+//   console.error('Error fetching market price:', error.response?.data || error.message);
+// });
+//
+console.log(instrument);
