@@ -391,7 +391,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `NIFTY25522${assetPrice}${direction}`;
+      const symbol = `SENSEX25525${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
