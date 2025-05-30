@@ -391,7 +391,7 @@ cron.schedule("* * * * * *", async () => {
         return;
       }
 
-      const symbol = `SENSEX25525${assetPrice}${direction}`;
+      const symbol = `SENSEX25603${assetPrice}${direction}`;
 
       if (lastTrade) {
         if (direction === lastTrade) return;
@@ -433,43 +433,43 @@ async function exitOrder(symbol) {
     transaction_type: "SELL", // original position was BUY
   };
 
-  // try {
-  //   const order = await kite.placeOrder("regular", {
-  //     tradingsymbol: position.tradingsymbol,
-  //     exchange: position.exchange,
-  //     quantity: position.quantity,
-  //     transaction_type: position.transaction_type,
-  //     product: position.product,
-  //     order_type: "MARKET", // square off immediately
-  //     variety: "regular",
-  //   });
-  //   console.log("Kite placed");
-  // } catch (e) {
-  //   console.log("Zerodha", e);
-  // }
-  //
-  // Order Payload
-  const orderData = {
-    product: "I",
-    validity: "DAY",
-    price: 0,
-    tag: "", // you can leave it empty or give a string
-    order_type: "MARKET",
-    transaction_type: "SELL",
-    disclosed_quantity: 0,
-    trigger_price: 0,
-    is_amo: false,
-  };
-
   try {
-    const instrument = await findInstrumentToken(symbol);
-    orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_key;
-    await placeOrder(orderData);
-  } catch (error) {
-    console.error(error.message);
+    const order = await kite.placeOrder("regular", {
+      tradingsymbol: position.tradingsymbol,
+      exchange: position.exchange,
+      quantity: position.quantity,
+      transaction_type: position.transaction_type,
+      product: position.product,
+      order_type: "MARKET", // square off immediately
+      variety: "regular",
+    });
+    console.log("Kite placed", order);
+  } catch (e) {
+    console.log("Zerodha", e);
   }
 
+  // Order Payload
+  // const orderData = {
+  //   product: "I",
+  //   validity: "DAY",
+  //   price: 0,
+  //   tag: "", // you can leave it empty or give a string
+  //   order_type: "MARKET",
+  //   transaction_type: "SELL",
+  //   disclosed_quantity: 0,
+  //   trigger_price: 0,
+  //   is_amo: false,
+  // };
+  //
+  // try {
+  //   const instrument = await findInstrumentToken(symbol);
+  //   orderData.quantity = instrument.lot_size;
+  //   orderData.instrument_token = instrument.instrument_key;
+  //   await placeOrder(orderData);
+  // } catch (error) {
+  //   console.error(error.message);
+  // }
+  //
   // try {
   //   const angelSymbol = convertToAngelOneSymbol(symbol);
   //   await placeAngelOneOrder(angelSymbol, "SELL");
@@ -517,49 +517,49 @@ async function newOrder(symbol) {
     transaction_type: "BUY",
   };
 
-  // try {
-  //   const order = await kite.placeOrder("regular", {
-  //     tradingsymbol: position.tradingsymbol,
-  //     exchange: position.exchange,
-  //     quantity: position.quantity,
-  //     transaction_type: position.transaction_type,
-  //     product: position.product,
-  //     order_type: "MARKET", // square off immediately
-  //     variety: "regular",
-  //   });
-  //   console.log("Kite placed");
-  // } catch (e) {
-  //   lastTrade = null;
-  //   lastAsset = null;
-  //   console.log(e);
-  // }
-  //
-  const orderData = {
-    product: "I",
-    validity: "DAY",
-    price: 0,
-    tag: "", // you can leave it empty or give a string
-    order_type: "MARKET",
-    transaction_type: "BUY",
-    disclosed_quantity: 0,
-    trigger_price: 0,
-    is_amo: false,
-  };
-
   try {
-    const instrument = await findInstrumentToken(symbol);
-    orderData.quantity = instrument.lot_size;
-    orderData.instrument_token = instrument.instrument_key;
-    await placeOrder(orderData);
-    console.log("upstox placed");
-  } catch (error) {
+    const order = await kite.placeOrder("regular", {
+      tradingsymbol: position.tradingsymbol,
+      exchange: position.exchange,
+      quantity: position.quantity,
+      transaction_type: position.transaction_type,
+      product: position.product,
+      order_type: "MARKET", // square off immediately
+      variety: "regular",
+    });
+    console.log("Kite placed", order);
+  } catch (e) {
     lastTrade = null;
-    false;
     lastAsset = null;
-
-    console.error(error.message);
+    console.log(e);
   }
 
+  // const orderData = {
+  //   product: "I",
+  //   validity: "DAY",
+  //   price: 0,
+  //   tag: "", // you can leave it empty or give a string
+  //   order_type: "MARKET",
+  //   transaction_type: "BUY",
+  //   disclosed_quantity: 0,
+  //   trigger_price: 0,
+  //   is_amo: false,
+  // };
+  //
+  // try {
+  //   const instrument = await findInstrumentToken(symbol);
+  //   orderData.quantity = instrument.lot_size;
+  //   orderData.instrument_token = instrument.instrument_key;
+  //   await placeOrder(orderData);
+  //   console.log("upstox placed");
+  // } catch (error) {
+  //   lastTrade = null;
+  //   false;
+  //   lastAsset = null;
+  //
+  //   console.error(error.message);
+  // }
+  //
   // try {
   //   const angelSymbol = convertToAngelOneSymbol(symbol);
   //   await placeAngelOneOrder(angelSymbol, "BUY");
