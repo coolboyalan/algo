@@ -261,14 +261,14 @@ cron.schedule("* * * * * *", async () => {
     };
 
     const positions = await kite.getPositions();
-    axios(config)
-      .then((response) => {
-        console.log(true, response.data.status);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+    // axios(config)
+    //   .then((response) => {
+    //     console.log(true, response.data.status);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    //
     console.log(new Date());
     // Get IST time by adding offset to UTC
     const istOffset = 5.5 * 60 * 60 * 1000;
