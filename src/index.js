@@ -428,7 +428,7 @@ async function exitOrder(symbol) {
   const position = {
     tradingsymbol: symbol,
     exchange: "NFO",
-    quantity: 20,
+    quantity: 75,
     product: "MIS", // or MIS/CNC
     transaction_type: "SELL", // original position was BUY
   };
@@ -512,7 +512,7 @@ async function newOrder(symbol) {
   const position = {
     tradingsymbol: symbol,
     exchange: "NFO",
-    quantity: 20,
+    quantity: 75,
     product: "MIS", // or MIS/CNC
     transaction_type: "BUY",
   };
