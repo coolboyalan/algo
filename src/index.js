@@ -427,7 +427,7 @@ async function exitOrder(symbol) {
   console.log(`Sell order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "BFO",
+    exchange: "NFO",
     quantity: 20,
     product: "MIS", // or MIS/CNC
     transaction_type: "SELL", // original position was BUY
@@ -511,7 +511,7 @@ async function newOrder(symbol) {
   console.log(`Buy order executed for ${symbol}`);
   const position = {
     tradingsymbol: symbol,
-    exchange: "BFO",
+    exchange: "NFO",
     quantity: 20,
     product: "MIS", // or MIS/CNC
     transaction_type: "BUY",
